@@ -21,12 +21,12 @@ re-generated with different values for sweeps and for the upgrade studies.
 
 PARAMS = dict(
     # ---- stage 1
-    jfet1="U310", r27="909", r2="1k", c1="47u", r5="100k",
+    jfet1="U310", r27="909", r2="1k", c1="100u", r5="100k",
     tube1="12AX7", r8="1m",
     # ---- RIAA network (one passive network between the stages)
     r6="475k", c4="0.1u", r7="22.1k", c5="3.3n", c6="10n", r9="681k",
     # ---- stage 2
-    jfet2="U310", r19="274", r11="1.836k", c8="47u", r10="100k", tube2="12AX7",
+    jfet2="U310", r19="274", r11="1.836k", c8="100u", r10="100k", tube2="12AX7",
     r12="75k", c7="4.7u", c21="0.01p",
     # ---- output controls: pots written as upper/lower halves
     r13a="1m", r13b="100k",      # balance, shown at "no cut"
@@ -51,7 +51,7 @@ CHANNEL = [
     ("Q7", "NJF", "k1 g7 s7", "{jfet1}", "P", "U310, marking clear on unit 1 (metal can)"),
     ("R27", "R", "s7 n2", "{r27}", "P", "909R on unit 1 (white-black-white-black-red, clear). 10R on the web photo: this unbypassed resistor sets the stage-1 gain"),
     ("R2", "R", "n2 0", "{r2}", "P", "1.00k on unit 1 and web (brown-black-black-brown-brown). Sets the bias with R27; selected on test per owners' notes"),
-    ("C1", "CE", "n2 0", "{c1},0.5", "E", "source bypass across R2 only; same style of can as C8, assumed the same value"),
+    ("C1", "CE", "n2 0", "{c1},0.5", "P", "source bypass across R2 only; 100 uF 16 V, same purple can as C8 (unit 1, IMG_5001: 16 V legible, value read on the unit by the owner)"),
     ("V1A", "TRI", "p1 g1 k1",    "{tube1}", "K", "pins 1,2,3"),
     ("V1B", "TRI", "p1 g1 k1",    "{tube1}", "K", "pins 6,7,8 - paralleled with V1A"),
     ("R5", "R", "BP1 p1", "{r5}", "P", "100k on unit 1 and web (owner note: 100 V drop at 1 mA). Unit 2 appears to have 150k 2 %"),
@@ -67,7 +67,7 @@ CHANNEL = [
     ("Q6", "NJF", "k2 g6 XS", "{jfet2}", "P", "U310, marking clear on unit 2; unit 1 has the same can (only the date code faces up)"),
     ("R19", "R", "XS n11", "{r19}", "P", "274R, red-violet-yellow-black on all boards. Unbypassed: sets the stage-2 gain"),
     ("R11", "R", "n11 0", "{r11}", "P", "BIAS trimmer marked 502 = 5k (unit 1, IMG_4998); shown set for 1 mA (100 V) in R10"),
-    ("C8", "CE", "n11 0", "{c8},0.5", "P", "source bypass across the trimmer only; small purple can, top looks like 47 (uF) - tentative (unit 1, IMG_4998)"),
+    ("C8", "CE", "n11 0", "{c8},0.5", "P", "source bypass across the trimmer only; 100 uF 16 V, marking clear (unit 1, IMG_4999)"),
     ("V2",  "TRI", "p2 VG2 k2",   "{tube2}", "K", "V2A pins 1,2,3 (V2B 6,7,8 other channel)"),
     ("R10", "R", "BP2 p2", "{r10}", "P", "100k, bands clear on units 1 and 2"),
     ("Q5", "NMOS", "BP2 p2 s5", "BSS101", "P", "BSS101 (Siemens TO-92), marking clear on unit 1"),

@@ -96,13 +96,13 @@ ax.axhline(0, color=AXIS, lw=1)
 ax.plot(f[m], np.array(R["A"]["err"])[m], color=COL["A"], lw=2)
 ax.annotate("as built", (f[m][-1], np.array(R["A"]["err"])[m][-1]), xytext=(-6, 9), textcoords="offset points", color=INK, fontsize=9.5, ha="right")
 from measure import riaa_err
-a2 = ac("riaa_alt", params=dict(A, r7="24.3k", c1="220u", c8="220u")); e2 = riaa_err(a2)
+a2 = ac("riaa_alt", params=dict(A, r7="24.3k")); e2 = riaa_err(a2)
 ax.plot(a2["f"][m], e2[m], color=MUTED, lw=2, ls=(0, (5, 2)))
-ax.annotate("R7 24.3 kΩ; C1, C8 220 µF", (a2["f"][m][-1], e2[m][-1]), xytext=(-6, -13), textcoords="offset points", color=INK2, fontsize=9.5, ha="right")
+ax.annotate("R7 changed to 24.3 kΩ", (a2["f"][m][-1], e2[m][-1]), xytext=(-6, -15), textcoords="offset points", color=INK2, fontsize=9.5, ha="right")
 ax.set_xscale("log"); ax.set_xlim(20, 20000); ax.set_ylim(-1.5, 1.5)
 ax.set_xticks([20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000]); ax.set_xticklabels(["20", "50", "100", "200", "500", "1k", "2k", "5k", "10k", "20k"])
 ax.set_xlabel("frequency, Hz"); ax.set_ylabel("deviation from RIAA, dB (0 at 1 kHz)")
-frame(ax, "One resistor and two capacitors bring the RIAA error within ±0.1 dB",
+frame(ax, "Changing R7 to 24.3 kΩ brings the RIAA error within ±0.2 dB",
       "Simulated equalisation error of the as-built circuit, 10 Ω source, volume at maximum.")
 fig.tight_layout(); fig.savefig("plots/riaa_error.png"); plt.close(fig)
 # ---- 5, 6. power supply (needs out/psu.json from psu.py)

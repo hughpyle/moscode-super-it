@@ -23,7 +23,7 @@ model, and a study of what limits its linearity and how to improve it.
   and 2.6 nV/√Hz. A 2SK170/LSK170 input JFET takes it to 1.4 nV/√Hz, but only
   with R2 re-selected.
 - The RIAA equalisation is within ±0.5 dB as built. **R7 from 22.1 kΩ to
-  24.3 kΩ**, with C1 and C8 raised to 220 µF, brings it within ±0.1 dB.
+  24.3 kΩ** brings it within ±0.2 dB.
 - The numbers come from a model in which several parts are still estimates.
   A few measurements on the real unit would pin it down; see
   [What to measure](#what-to-measure).
@@ -41,7 +41,7 @@ before touching the board.
 | `sources/moscode-2.jpg` | Board photo found on line: modified unit. |
 | `sources/IMG_4981` to `IMG_4985` | Unit 1: complete rev E board dated 2-86. |
 | `sources/IMG_4986` to `IMG_4988` | Unit 2: earlier board (593-008004, dated 38-85), partly stripped. |
-| `sources/IMG_4993` to `IMG_4998` | Unit 1 close-ups: C4, R7, the rail film capacitors, R9, and R11 with C8. |
+| `sources/IMG_4993` to `IMG_5001` | Unit 1 close-ups: C4, R7, the rail film capacitors, R9, R11, C8 and C1. |
 | `readings/` | Enlarged crops of the parts whose markings and colour bands were read, with the reading written on each. |
 | `kicad/` | KiCad project `superit.kicad_pro`. Root sheet: power supply and test sources. `channel.kicad_sch`: one audio channel, used twice. `superit.lib`: SPICE models. |
 | `kicad/superit-schematic.pdf` | The whole schematic as a PDF: power supply and test fixture, left channel, right channel. |
@@ -114,7 +114,7 @@ readings that matter most:
 | R9 | **681 kΩ 1 %** (close-up) | not legible | not legible | 681 kΩ |
 | C5, C6 | 3300 pF 1 %, 0.01 µF 2 % | same, markings clear | same | as marked |
 | C4 | WIMA MKP10 0.1 µF 400 V | 0.1 µF 400 V | red film box | 0.1 µF |
-| C8, C1 | C8 looks like 47 µF (tentative); C1 is the same style of can, not read | not legible | not legible | 47 µF both |
+| C8, C1 | **100 µF 16 V** (C8 marking clear; C1 is the same can, value read on the unit) | not legible | not legible | 100 µF both |
 | R3, R8 | 0 Ω links | real resistors, about 22 Ω | 0 Ω links | links |
 | R4 | 1.00 kΩ | 475 kΩ in that position | 1 kΩ | 1.00 kΩ |
 | Q5 | BSS101 | TO-92, not read | TO-92 | BSS101-class model |
@@ -127,9 +127,9 @@ readings that matter most:
 | C21 | not fitted | a small axial part is fitted | not fitted | open |
 | Pots | 100 kΩ MN, 100 kΩ dual | same | same | 100 kΩ |
 
-Still estimates: C3 and C7 (values not legible), C1 (assumed equal to C8),
-the zeners D5, D6, D9 and D10, the loading resistors R20 to R23, and most of
-the power-supply resistors. B+ is therefore an estimate too: 247 V in the
+Still estimates: C3 and C7 (values not legible), the zeners D5, D6, D9 and
+D10, the loading resistors R20 to R23, and most of the power-supply
+resistors. B+ is therefore an estimate too: 247 V in the
 model. It cannot be much higher, because C14 and the rail film capacitors sit
 at B+ and are rated 250 V.
 
@@ -175,7 +175,7 @@ All figures are simulated: left channel, 10 Ω source unless stated, 100 kΩ and
 | S/N, A-weighted, re 0.5 mV, 10 Ω source | 62.9 dB |
 | THD at 1 kHz | 0.031 % at 0.5 mV, 0.31 % at 5 mV, 1.25 % at 20 mV |
 | Input level for 1 % THD | 16 mV |
-| RIAA error re 1 kHz | −0.4 dB at 20 Hz, +0.3 to +0.4 dB from 50 to 200 Hz, +0.5 dB from 10 to 20 kHz |
+| RIAA error re 1 kHz | +0.3 to +0.45 dB from 20 to 200 Hz, +0.5 dB from 10 to 20 kHz |
 | Raw-supply ripple to output | −47 dB at 60 Hz, −62 dB at 120 Hz |
 | Crosstalk L to R | −75 dB at 100 Hz, below −100 dB above 1 kHz |
 
@@ -201,13 +201,12 @@ What limits it:
 
 ![Treble loss from the volume pot](sim/plots/volume_pot_treble_loss.png)
 
-- **The RIAA equalisation is within ±0.5 dB, and two things account for the
-  error.** R7 is a little low: R7 × (C5 + C6) is 294 µs against the standard
+- **The RIAA equalisation is within ±0.5 dB, and R7 accounts for the
+  error.** It is a little low: R7 × (C5 + C6) is 294 µs against the standard
   318 µs, which leaves the response 0.3 to 0.5 dB high on both sides of
-  1 kHz. And the 47 µF source bypass capacitors C1 and C8 start to lose
-  gain below 30 Hz. With R7 = 24.3 kΩ and C1 = C8 = 220 µF the error is within
-  ±0.1 dB from 20 Hz to 20 kHz (the dashed line). The 47 µF reading is
-  tentative, so the 20 Hz figure is the least certain part of this.
+  1 kHz. With R7 = 24.3 kΩ the error is within ±0.2 dB from 20 Hz to 20 kHz
+  (the dashed line). What is left is mostly at 20 Hz, where the 100 µF
+  source bypass capacitors C1 and C8 start to lose gain.
 
 ![RIAA error](sim/plots/riaa_error.png)
 
@@ -224,8 +223,8 @@ What limits it:
 
 S/N re 5 mV with a moving-magnet source is 78.6 to 80.9 dB for all six. The
 RIAA error is the same in all six above 100 Hz. C1 goes up when R27 comes
-down because the lower R27 moves the bypass corner up: with 47 µF and
-R27 = 10 Ω it would be at 16 Hz.
+down because the lower R27 moves the bypass corner up: with 100 µF and
+R27 = 10 Ω the response would be 0.5 dB lower at 20 Hz.
 
 ![THD against level](sim/plots/thd_vs_level.png)
 
@@ -267,7 +266,7 @@ has.
 
 | Frequency | B+1 rail impedance | Raw ripple to B+ | B+1 as an equivalent input | B+2 as an equivalent input | Raw supply as an equivalent input |
 |---|---|---|---|---|---|
-| 20 Hz | 0.63 Ω | −70 dB | −39 dB | −77 dB | −109 dB |
+| 20 Hz | 0.63 Ω | −70 dB | −39 dB | −78 dB | −109 dB |
 | 60 Hz | 0.21 Ω | −82 dB | −39 dB | −75 dB | −121 dB |
 | 120 Hz | 0.10 Ω | −93 dB | −39 dB | −71 dB | −132 dB |
 | 1 kHz | 0.006 Ω | −141 dB | −39 dB | −58 dB | −180 dB |
@@ -328,7 +327,7 @@ on the output as an input signal that many dB smaller.
 ## Recommendations
 
 In order of value for effort. Items 2 to 4 need two resistors per channel and
-a meter. Item 7 needs one resistor and two capacitors per channel.
+a meter. Item 7 needs one resistor per channel.
 
 1. **Measure first.** The checks in [What to measure](#what-to-measure) tell
    you whether the model's operating point is right for your unit.
@@ -354,7 +353,8 @@ a meter. Item 7 needs one resistor and two capacitors per channel.
 
 4. **Stage 1: choose R27 for the cartridge.** Always change R2 in the opposite
    direction so that R27 + R2 stays the same and the current does not move.
-   If you lower R27, raise C1 to 470 µF or more to keep the bass response.
+   If you lower R27 below about 220 Ω, raise C1 from 100 µF to 470 µF to
+   keep the response at 20 Hz.
    - Moving magnet, about 5 mV: leave R27 at 909 Ω. Lower values add
      distortion and gain you do not need, for at most 2 dB of S/N.
    - High-output moving coil, about 2 mV: R27 220 to 470 Ω.
@@ -376,12 +376,11 @@ a meter. Item 7 needs one resistor and two capacitors per channel.
    reduce it to 0.15 dB but lose 0.5 dB at 20 Hz unless C7 is larger than the
    4.7 µF I assumed.
 
-7. **RIAA trim: R7 from 22.1 kΩ to 24.3 kΩ, and C1 and C8 from 47 µF to
-   220 µF.** This takes the error from ±0.5 dB to within ±0.1 dB from 20 Hz
-   to 20 kHz. Do both together: R7 alone leaves the bass 0.9 dB down at
-   20 Hz, and the capacitors alone leave the 0.5 dB error in place. C1 and
-   C8 carry 1984 date codes and are due for replacement anyway; 6.3 V parts
-   are enough (they sit at about 1 V and 2 V). Confirm R7 with a meter first.
+7. **RIAA trim: R7 from 22.1 kΩ to 24.3 kΩ.** This takes the error from
+   ±0.5 dB to within ±0.2 dB from 20 Hz to 20 kHz. The largest error left is
+   −0.17 dB at 20 Hz. C1 and C8 (100 µF 16 V) are 1980s parts and due for
+   replacement anyway; fitting 220 µF in both when you do brings the error
+   within ±0.1 dB. Confirm R7 with a meter first.
 
 8. **Leave C21 unfitted.** On the drawing it links the two Q6 sources. With
    220 pF there, channel separation falls to 54 dB at 10 kHz and 48 dB at
@@ -416,8 +415,7 @@ With the unit off and C18 discharged:
 - **R7**, in circuit, to confirm 22.1 kΩ. Its far end connects only to C5 and
   C6, so a meter across it reads the resistor alone.
 - R11 as set (the model expects about 1.84 kΩ of the 5 kΩ), the markings on
-  C1 and C8 (47 µF is a tentative reading of C8), C3 and C7, and the zener
-  type numbers.
+  C3 and C7, and the zener type numbers.
 
 Put any of these into `sim/circuit.py` and re-run the scripts.
 
