@@ -1,0 +1,79 @@
+== 1. volume-pot position x cable capacitance (as built), response re full volume
+   load 200p  volume    0 dB: 10 kHz +0.00 dB   20 kHz +0.00 dB
+   load 200p  volume   -6 dB: 10 kHz -0.27 dB   20 kHz -1.01 dB
+   load 200p  volume  -12 dB: 10 kHz -0.18 dB   20 kHz -0.67 dB
+   load 200p  volume  -20 dB: 10 kHz -0.05 dB   20 kHz -0.21 dB
+   load 500p  volume    0 dB: 10 kHz +0.00 dB   20 kHz +0.00 dB
+   load 500p  volume   -6 dB: 10 kHz -1.47 dB   20 kHz -4.20 dB
+   load 500p  volume  -12 dB: 10 kHz -0.99 dB   20 kHz -3.09 dB
+   load 500p  volume  -20 dB: 10 kHz -0.31 dB   20 kHz -1.15 dB
+   load   1n  volume    0 dB: 10 kHz +0.00 dB   20 kHz +0.00 dB
+   load   1n  volume   -6 dB: 10 kHz -4.14 dB   20 kHz -8.72 dB
+   load   1n  volume  -12 dB: 10 kHz -3.05 dB   20 kHz -7.09 dB
+   load   1n  volume  -20 dB: 10 kHz -1.12 dB   20 kHz -3.42 dB
+== 2. supply rejection and channel separation (as built)
+   HT raw -> out  -47.0 dB | -> B+1  -82.5 dB | -> B+2  -82.5 dB | -> rail  -57.0 dB   @ 60 Hz
+   HT raw -> out  -62.1 dB | -> B+1  -93.4 dB | -> B+2  -93.4 dB | -> rail  -61.9 dB   @ 120 Hz
+   HT raw -> out -122.0 dB | -> B+1 -140.8 dB | -> B+2 -140.8 dB | -> rail  -90.1 dB   @ 1000 Hz
+   HT raw -> out -156.7 dB | -> B+1 -163.4 dB | -> B+2 -163.7 dB | -> rail -110.8 dB   @ 10000 Hz
+   L->R crosstalk (shared supplies and shared V2 grid node; C21 not fitted): 100 Hz -75 dB, 1000 Hz -111 dB, 10000 Hz -113 dB, 20000 Hz -104 dB
+   same if a 220 pF C21 is fitted (unit 2 has a part there): 100 Hz -74 dB, 1000 Hz -74 dB, 10000 Hz -54 dB, 20000 Hz -48 dB
+== 3. treble overload: 10 kHz and 20 kHz tones at the level a 5 mV/1 kHz cartridge gives for equal recorded velocity
+   A     10 kHz 24.3 mV in: stage-1 plate 1.74 V rms THD 0.065%, output 4.32 V THD 0.334%
+   A     20 kHz 47.9 mV in: stage-1 plate 3.43 V rms THD 0.128%, output 4.32 V THD 0.352%
+   C     10 kHz 24.3 mV in: stage-1 plate 1.74 V rms THD 0.065%, output 1.29 V THD 0.039%
+   C     20 kHz 47.9 mV in: stage-1 plate 3.43 V rms THD 0.128%, output 1.30 V THD 0.071%
+== 4. sensitivity to the readings that are still uncertain (as-built circuit)
+   as built (reference): gain 58.2 dB, en 6.02 nV/rtHz, S/N(A) MC 62.8 / MM 78.9 dB, THD 0.5 mV 0.0308%  5 mV 0.308%
+        RIAA error: 20 Hz -0.13, 50 Hz +0.11, 100 Hz +0.27, 500 Hz +0.11, 2000 Hz +0.15, 10000 Hz +0.57, 20000 Hz +0.59
+   R7 = 23.7k instead of 22k: gain 58.5 dB, en 5.96 nV/rtHz, S/N(A) MC 63.1 / MM 79.1 dB, THD 0.5 mV 0.0321%  5 mV 0.321%
+        RIAA error: 20 Hz -0.50, 50 Hz -0.26, 100 Hz -0.11, 500 Hz -0.02, 2000 Hz +0.09, 10000 Hz +0.24, 20000 Hz +0.23
+   R5 = 150k as on unit 2 (R11 re-trimmed): gain 61.0 dB, en 5.28 nV/rtHz, S/N(A) MC 64.1 / MM 79.4 dB, THD 0.5 mV 0.0428%  5 mV 0.428%
+        RIAA error: 20 Hz +0.17, 50 Hz +0.30, 100 Hz +0.35, 500 Hz +0.11, 2000 Hz +0.14, 10000 Hz +0.55, 20000 Hz +0.55
+   C4 = 0.22u instead of 0.1u: gain 58.2 dB, en 6.02 nV/rtHz, S/N(A) MC 62.8 / MM 78.9 dB, THD 0.5 mV 0.0308%  5 mV 0.308%
+        RIAA error: 20 Hz -0.02, 50 Hz +0.18, 100 Hz +0.30, 500 Hz +0.11, 2000 Hz +0.15, 10000 Hz +0.57, 20000 Hz +0.59
+   centre-of-data-sheet U310 (Vp -4 V, Idss 40 mA) with the fitted R27 + R2 (stage 2 re-trimmed): @j.xchl.jq7[id] = 1.692568e-03; v(xchl.p1) = 7.755813e+01; v(xchl.k1) = 1.207326e+01; v(xchl.g1) = 1.197861e+01
+      ... its performance: gain 57.4 dB, en 6.04 nV/rtHz, S/N(A) MC 62.8 / MM 78.9 dB, THD 0.5 mV 0.0312%  5 mV 0.312%
+   12AT7 in V2 (R11 re-trimmed): gain 58.1 dB, en 6.02 nV/rtHz, S/N(A) MC 62.8 / MM 78.9 dB, THD 0.5 mV 0.0300%  5 mV 0.300%
+   B+ 30 V lower (2 x 115 V zeners): gain 58.1 dB, en 6.02 nV/rtHz, S/N(A) MC 62.8 / MM 78.9 dB, THD 0.5 mV 0.0305%  5 mV 0.305%
+== 5. channel-gain change if both JFETs have 30 % more beta and the resistors are left alone
+   A: +0.80 dB
+   C: +0.41 dB
+   F (C8 removed): +0.37 dB
+== 6. grid current in the cascode triodes (representative law, not in the standard model)
+   A   standard model (no grid current)  : THD @5 mV 0.308% (H2 0.308%), en 6.02 nV/rtHz, -Vgk V1 0.87 V, V2 0.73 V
+   A   grid current in V1 only           : THD @5 mV 0.320% (H2 0.320%), en 6.07 nV/rtHz, -Vgk V1 0.87 V, V2 0.73 V
+   A   grid current in V2 only           : THD @5 mV 0.568% (H2 0.559%), en 6.02 nV/rtHz, -Vgk V1 0.87 V, V2 0.73 V
+   A   12AT7 in V2 (standard model)      : THD @5 mV 0.300% (H2 0.300%), en 6.02 nV/rtHz, -Vgk V1 0.87 V, V2 2.17 V
+   C   standard model (no grid current)  : THD @5 mV 0.020% (H2 0.020%), en 6.11 nV/rtHz, -Vgk V1 0.87 V, V2 0.73 V
+   C   grid current in V1 only           : THD @5 mV 0.037% (H2 0.037%), en 6.17 nV/rtHz, -Vgk V1 0.87 V, V2 0.73 V
+   C   grid current in V2 only           : THD @5 mV 0.235% (H2 0.235%), en 6.11 nV/rtHz, -Vgk V1 0.87 V, V2 0.73 V
+   C   12AT7 in V2 (standard model)      : THD @5 mV 0.020% (H2 0.020%), en 6.11 nV/rtHz, -Vgk V1 0.87 V, V2 2.17 V
+== 7. R27 as the gain / noise / linearity knob (U310 at Q7, R2 re-selected each time)
+   -- stage 2 with R19 = 274
+   R27=909 R2= 1000: gain 58.2 dB, en 6.02 nV/rtHz, S/N(A) MC 62.8 / MM 78.9 dB, THD 0.5 mV 0.0308%  5 mV 0.308%
+   R27=470 R2= 1439: gain 62.3 dB, en 4.25 nV/rtHz, S/N(A) MC 65.9 / MM 79.9 dB, THD 0.5 mV 0.0492%  5 mV 0.491%
+   R27=220 R2= 1689: gain 66.1 dB, en 3.17 nV/rtHz, S/N(A) MC 68.6 / MM 80.5 dB, THD 0.5 mV 0.0743%  5 mV 0.744%
+   R27=100 R2= 1809: gain 68.8 dB, en 2.60 nV/rtHz, S/N(A) MC 70.3 / MM 80.7 dB, THD 0.5 mV 0.0985%  5 mV 0.987%
+   R27= 47 R2= 1862: gain 70.2 dB, en 2.33 nV/rtHz, S/N(A) MC 71.3 / MM 80.8 dB, THD 0.5 mV 0.1150%  5 mV 1.155%
+   R27= 22 R2= 1887: gain 71.0 dB, en 2.20 nV/rtHz, S/N(A) MC 71.8 / MM 80.9 dB, THD 0.5 mV 0.1249%  5 mV 1.255%
+   R27= 10 R2= 1899: gain 71.4 dB, en 2.14 nV/rtHz, S/N(A) MC 72.1 / MM 80.9 dB, THD 0.5 mV 0.1303%  5 mV 1.310%
+   -- stage 2 with R19 = 1.5k
+   R27=909 R2= 1000: gain 47.7 dB, en 6.11 nV/rtHz, S/N(A) MC 62.4 / MM 78.7 dB, THD 0.5 mV 0.0020%  5 mV 0.020%
+   R27=470 R2= 1439: gain 51.9 dB, en 4.30 nV/rtHz, S/N(A) MC 65.6 / MM 79.8 dB, THD 0.5 mV 0.0029%  5 mV 0.029%
+   R27=220 R2= 1689: gain 55.7 dB, en 3.20 nV/rtHz, S/N(A) MC 68.3 / MM 80.4 dB, THD 0.5 mV 0.0048%  5 mV 0.048%
+   R27=100 R2= 1809: gain 58.3 dB, en 2.62 nV/rtHz, S/N(A) MC 70.1 / MM 80.7 dB, THD 0.5 mV 0.0082%  5 mV 0.082%
+   R27= 47 R2= 1862: gain 59.8 dB, en 2.35 nV/rtHz, S/N(A) MC 71.1 / MM 80.8 dB, THD 0.5 mV 0.0117%  5 mV 0.117%
+   R27= 22 R2= 1887: gain 60.6 dB, en 2.21 nV/rtHz, S/N(A) MC 71.6 / MM 80.8 dB, THD 0.5 mV 0.0143%  5 mV 0.143%
+   R27= 10 R2= 1899: gain 61.0 dB, en 2.15 nV/rtHz, S/N(A) MC 71.9 / MM 80.9 dB, THD 0.5 mV 0.0158%  5 mV 0.158%
+== 8. 2SK170 / LSK170 at Q7 (variant E): R27
+   R27= 10 R2=  323: gain 71.3 dB, en 1.27 nV/rtHz, S/N(A) MC 76.7 / MM 80.7 dB, THD 0.5 mV 0.0448%  5 mV 0.449%
+   R27= 22 R2=  311: gain 70.0 dB, en 1.36 nV/rtHz, S/N(A) MC 76.1 / MM 80.8 dB, THD 0.5 mV 0.0330%  5 mV 0.331%
+   R27= 47 R2=  286: gain 67.9 dB, en 1.53 nV/rtHz, S/N(A) MC 75.0 / MM 80.8 dB, THD 0.5 mV 0.0207%  5 mV 0.208%
+   R27=100 R2=  233: gain 64.5 dB, en 1.85 nV/rtHz, S/N(A) MC 73.3 / MM 80.8 dB, THD 0.5 mV 0.0125%  5 mV 0.125%
+== 9. stage 2: R19 as the gain / linearity knob (stage 1 as built)
+   R19= 274 R11= 1836: gain 58.2 dB, en 6.02 nV/rtHz, S/N(A) MC 62.8 / MM 78.9 dB, THD 0.5 mV 0.0308%  5 mV 0.308%
+   R19= 560 R11= 1550: gain 54.4 dB, en 6.04 nV/rtHz, S/N(A) MC 62.7 / MM 78.8 dB, THD 0.5 mV 0.0123%  5 mV 0.123%
+   R19=  1k R11= 1110: gain 50.6 dB, en 6.07 nV/rtHz, S/N(A) MC 62.6 / MM 78.8 dB, THD 0.5 mV 0.0046%  5 mV 0.046%
+   R19=1.5k R11=  610: gain 47.7 dB, en 6.11 nV/rtHz, S/N(A) MC 62.4 / MM 78.7 dB, THD 0.5 mV 0.0020%  5 mV 0.020%
+   R19=  2k R11=  106: gain 45.5 dB, en 6.15 nV/rtHz, S/N(A) MC 62.2 / MM 78.6 dB, THD 0.5 mV 0.0011%  5 mV 0.011%

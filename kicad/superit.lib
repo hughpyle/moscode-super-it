@@ -1,0 +1,118 @@
+* SPICE models for the Moscode / NYAL "SuperIt" simulation.
+* Shared by the KiCad project (kicad/) and the scripted runs (sim/).
+* Written for ngspice (the simulator inside KiCad).  Behavioural sources use
+* native B-source syntax so they work in any ngspice compatibility mode.
+
+* ---- 12AX7 / ECC83 triode, Norman Koren's model.  Pins: Anode Grid Kathode
+.subckt 12AX7 A G K
+Bv   v7 0 V = V(A,K)/600*ln(1+exp(600*(1/100+V(G,K)/sqrt(300+V(A,K)*V(A,K)))))
+Rv   v7 0 1G
+Ba   A K I = 2*pwr(uramp(V(v7)),1.4)/1060
+Rak  A K 1G
+Cgk  G K 2.3p
+Cga  G A 2.4p
+Cak  A K 0.9p
+Rgi  G gi 2k
+Dgk  gi K DGRID
+.model DGRID D(IS=1n RS=1 CJO=10p TT=1n)
+.ends 12AX7
+
+* ---- 12AT7 / ECC81 (Koren) - used for the "more current" upgrade study
+.subckt 12AT7 A G K
+Bv   v7 0 V = V(A,K)/300*ln(1+exp(300*(1/60+V(G,K)/sqrt(300+V(A,K)*V(A,K)))))
+Rv   v7 0 1G
+Ba   A K I = 2*pwr(uramp(V(v7)),1.35)/460
+Rak  A K 1G
+Cgk  G K 2.7p
+Cga  G A 2.2p
+Cak  A K 1.0p
+Rgi  G gi 2k
+Dgk  gi K DGRID
+.model DGRID D(IS=1n RS=1 CJO=10p TT=1n)
+.ends 12AT7
+
+* ---- JFETs.  Both units photographed by the owner carry Siliconix U310 metal-can
+* parts (Q7 on unit 1, Q6 on unit 2).  Data sheet: Vgs(off) -2.5...-6 V,
+* Idss 24...60 mA.  On unit 1 the source resistors are R27 = 909R + R2 = 1.00k,
+* which only gives about 1 mA (100 V in R5) with a part at the low-pinch-off
+* corner of that range, so that is what U310 below represents (Vp -2.6 V,
+* Idss 24 mA).  U310TYP is the centre of the data sheet, for sensitivity runs.
+* Noise and capacitance parameters are those of the usual J310 model.
+.model U310 NJF(Beta=3.55m Lambda=17m Vto=-2.6 Rd=1 Rs=1 Is=193.9f
++ Cgd=4.11p Cgs=5.5p Pb=1 Fc=.5 Kf=13.56e-18 Af=1)
+.model U310TYP NJF(Beta=2.5m Lambda=17m Vto=-4.0 Rd=1 Rs=1 Is=193.9f
++ Cgd=4.11p Cgs=5.5p Pb=1 Fc=.5 Kf=13.56e-18 Af=1)
+* JSTOCK was the stand-in used before the JFET type was known (a low-pinch-off
+* general-purpose part, as the web photo with R27 = 10R + R2 = 1.00k implies).
+* JMIDGM has 2N4393 parameters.  2SK170 is what restorers fit today (LSK170 is
+* the in-production equivalent).
+.model JSTOCK NJF(Beta=1m Lambda=5m Vto=-2.0 Rd=5 Rs=5 Is=1p
++ Cgd=2p Cgs=4p Pb=1 Fc=.5 Kf=5e-18 Af=1)
+.model JMIDGM NJF(Beta=9.109m Lambda=6m Vto=-1.422 Rd=1 Rs=1 Is=205.2f
++ Cgd=4.57p Cgs=4.06p Pb=1 Fc=.5 Kf=123e-18 Af=1)
+.model 2SK170 NJF(Beta=59.86m Lambda=1.923m Vto=-.5024 Rd=4.151 Rs=4.151
++ Is=8.477p Cgd=20p Cgs=25.48p Pb=.4746 Fc=.5 Kf=111.3e-18 Af=1)
+
+* ---- High-voltage small-signal N-MOSFETs.  Unit 1: Q5 = BSS101 (Siemens, TO-92,
+* 240 V), Q3/Q4 = VN0220N2 (Supertex, TO-39, 200 V).  Generic VDMOS models of
+* that class; only threshold, transconductance and capacitance matter here.
+.model BSS101 VDMOS(Vto=1.4 Kp=0.25 Lambda=3m Rd=10 Rs=1 Rg=20 ksubthres=0.1
++ Cgdmax=25p Cgdmin=3p Cgs=45p Cjo=20p Is=1e-13 Rb=1)
+.model HVNMOS VDMOS(Vto=2.0 Kp=0.1 Lambda=3m Rd=30 Rs=1 Rg=20 ksubthres=0.1
++ Cgdmax=30p Cgdmin=3p Cgs=40p Cjo=20p Is=1e-13 Rb=1)
+
+* ---- Small parts
+.model HVNPN NPN(IS=1e-13 BF=100 VAF=200 RB=5 RC=2 CJE=30p CJC=10p TF=2n)
+.model D1N4007 D(IS=7n RS=0.04 N=1.7 BV=1000 IBV=5u CJO=15p TT=3u)
+.model D1N4148 D(IS=2.5n RS=0.6 N=1.75 BV=100 IBV=100u CJO=2p TT=4n)
+.model DZ130 D(IS=1n RS=5 N=1.5 BV=130 IBV=1m CJO=30p)
+.model DZ115 D(IS=1n RS=5 N=1.5 BV=115 IBV=1m CJO=30p)
+.model DZ24  D(IS=1n RS=5 N=1.5 BV=24  IBV=1m CJO=60p)
+.model DZ12  D(IS=1n RS=5 N=1.5 BV=12  IBV=1m CJO=80p)
+
+* ---- Electrolytic capacitor with series resistance.  Pins: + -
+.subckt ELCAP P N params: C=10u ESR=1
+Cx P m {C}
+Rx m N {ESR}
+.ends ELCAP
+
+* ---- One section of IC2 = LF353N (read from the board).  Pins: +in -in V+ V- out
+* Single pole, 4 MHz GBW, 1.8 mA supply current per section, output limited to 1.5 V inside the rails.
+.subckt OPAMP INP INN VP VN OUT
+Rin  INP INN 1T
+Gm   0 n1 INP INN 1m
+R1   n1 0 100Meg
+C1   n1 0 40p
+Dp   n1 clp DCL
+Vp   clp 0 20
+Dn   cln n1 DCL
+Vn   cln 0 -20
+Bo   o1 0 V = min(max((V(VP)+V(VN))/2+V(n1), V(VN)+1.5), V(VP)-1.5)
+Ro   o1 OUT 100
+Iq   VP VN 1.8m
+.model DCL D(IS=1n)
+.ends OPAMP
+
+* ---- Three-terminal regulator, 7812 class (IC1).  Pins: in gnd out
+.subckt REG12 IN GND OUT
+Bo   o1 GND V = min(12, max(V(IN,GND)-2, 0))
+Ro   o1 OUT 0.05
+Iq   IN GND 5m
+.ends REG12
+
+* ---- J310 (plastic equivalent of the U310), centre-of-range model
+.model J310 NJF(Beta=3.384m Lambda=17m Vto=-3.409 Rd=1 Rs=1 Is=193.9f
++ Cgd=4.11p Cgs=5.5p Pb=1 Fc=.5 Kf=13.56e-18 Af=1)
+
+* ---- 12AX7 with a representative grid-current law added (0.3 uA at -1.0 V,
+* e-folding every 0.11 V), for the grid-current sensitivity study only.
+.subckt 12AX7G A G K
+Bv   v7 0 V = V(A,K)/600*ln(1+exp(600*(1/100+V(G,K)/sqrt(300+V(A,K)*V(A,K)))))
+Rv   v7 0 1G
+Ba   A K I = 2*pwr(uramp(V(v7)),1.4)/1060
+Rak  A K 1G
+Cgk  G K 2.3p
+Cga  G A 2.4p
+Cak  A K 0.9p
+Bg   G K I = 0.3u*exp(min((V(G,K)+1.0)/0.11, 5))
+.ends 12AX7G

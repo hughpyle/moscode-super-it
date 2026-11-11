@@ -1,0 +1,18 @@
+A as built (unit 1): U310s, R27 909R, R19 274R
+   gain 58.2 dB (st1+EQ 12.6, st2 45.5) RIAA +-0.59 dB | en@1k 6.02 nV/rtHz | S/N(A) MC 0.5mV 62.8 dB, MM 5mV 78.9 dB | THD 0.5mV 0.0308%  5mV 0.308%  20mV 1.24% | 1% THD at 16.2 mV in | out @5mV 4.04 V | en@100 5.41
+   RIAA error re 1 kHz: 20 Hz -0.13, 50 Hz +0.11, 100 Hz +0.27, 200 Hz +0.29, 500 Hz +0.11, 2000 Hz +0.15, 5000 Hz +0.47, 10000 Hz +0.57, 20000 Hz +0.59
+B high-gain build: R27 10R, R2 re-selected
+   gain 71.4 dB (st1+EQ 25.9, st2 45.5) RIAA +-0.59 dB | en@1k 2.14 nV/rtHz | S/N(A) MC 0.5mV 72.1 dB, MM 5mV 80.9 dB | THD 0.5mV 0.1303%  5mV 1.310%  20mV 15.50% | 1% THD at 3.8 mV in | out @5mV 18.65 V | en@100 3.34
+   RIAA error re 1 kHz: 20 Hz -0.24, 50 Hz +0.09, 100 Hz +0.27, 200 Hz +0.29, 500 Hz +0.11, 2000 Hz +0.15, 5000 Hz +0.47, 10000 Hz +0.57, 20000 Hz +0.59
+C A with R19 = 1.5k (stage 2 degenerated)
+   gain 47.7 dB (st1+EQ 12.6, st2 35.0) RIAA +-0.60 dB | en@1k 6.11 nV/rtHz | S/N(A) MC 0.5mV 62.4 dB, MM 5mV 78.7 dB | THD 0.5mV 0.0020%  5mV 0.020%  20mV 0.08% | 1% THD at nan mV in | out @5mV 1.21 V | en@100 5.41
+   RIAA error re 1 kHz: 20 Hz -0.12, 50 Hz +0.12, 100 Hz +0.27, 200 Hz +0.29, 500 Hz +0.11, 2000 Hz +0.15, 5000 Hz +0.48, 10000 Hz +0.58, 20000 Hz +0.59
+D B with R19 = 1.5k
+   gain 61.0 dB (st1+EQ 25.9, st2 35.0) RIAA +-0.60 dB | en@1k 2.15 nV/rtHz | S/N(A) MC 0.5mV 71.9 dB, MM 5mV 80.9 dB | THD 0.5mV 0.0158%  5mV 0.158%  20mV 0.63% | 1% THD at 22.9 mV in | out @5mV 5.60 V | en@100 3.34
+   RIAA error re 1 kHz: 20 Hz -0.23, 50 Hz +0.10, 100 Hz +0.27, 200 Hz +0.29, 500 Hz +0.11, 2000 Hz +0.15, 5000 Hz +0.48, 10000 Hz +0.58, 20000 Hz +0.60
+E D with 2SK170 at Q7 (R27 22R, C1 1000u)
+   gain 70.0 dB (st1+EQ 35.0, st2 35.0) RIAA +-0.60 dB | en@1k 1.36 nV/rtHz | S/N(A) MC 0.5mV 76.1 dB, MM 5mV 80.8 dB | THD 0.5mV 0.0330%  5mV 0.331%  20mV 14.45% | 1% THD at 10.9 mV in | out @5mV 15.86 V | en@100 2.42
+   RIAA error re 1 kHz: 20 Hz -0.16, 50 Hz +0.11, 100 Hz +0.27, 200 Hz +0.29, 500 Hz +0.11, 2000 Hz +0.15, 5000 Hz +0.48, 10000 Hz +0.58, 20000 Hz +0.59
+F A with C8 simply removed
+   gain 45.1 dB (st1+EQ 12.6, st2 32.5) RIAA +-0.60 dB | en@1k 6.16 nV/rtHz | S/N(A) MC 0.5mV 62.2 dB, MM 5mV 78.6 dB | THD 0.5mV 0.0010%  5mV 0.010%  20mV 0.04% | 1% THD at nan mV in | out @5mV 0.90 V | en@100 5.42
+   RIAA error re 1 kHz: 20 Hz -0.11, 50 Hz +0.12, 100 Hz +0.27, 200 Hz +0.29, 500 Hz +0.11, 2000 Hz +0.15, 5000 Hz +0.48, 10000 Hz +0.58, 20000 Hz +0.60
