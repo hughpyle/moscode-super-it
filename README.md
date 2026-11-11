@@ -19,9 +19,11 @@ model, and a study of what limits its linearity and how to improve it.
   about fifteen-fold (0.31 % to 0.02 % at 5 mV) and brings the gain down to
   48 dB, which suits a moving-magnet cartridge. Noise does not change.
 - For a low-output moving-coil cartridge, **R27 is the noise knob**: 22 to 100 Ω
-  (with R2 raised by the same amount) takes the noise from 6 to about
-  2.3 nV/√Hz. A 2SK170/LSK170 input JFET takes it to 1.4 nV/√Hz, but only with
-  R2 re-selected.
+  (with R2 raised by the same amount) takes the noise from 6 to between 2.2
+  and 2.6 nV/√Hz. A 2SK170/LSK170 input JFET takes it to 1.4 nV/√Hz, but only
+  with R2 re-selected.
+- The RIAA equalisation is within ±0.5 dB as built. **R7 from 22.1 kΩ to
+  24.3 kΩ**, with C1 and C8 raised to 220 µF, brings it within ±0.1 dB.
 - The numbers come from a model in which several parts are still estimates.
   A few measurements on the real unit would pin it down; see
   [What to measure](#what-to-measure).
@@ -39,14 +41,24 @@ before touching the board.
 | `sources/moscode-2.jpg` | Board photo found on line: modified unit. |
 | `sources/IMG_4981` to `IMG_4985` | Unit 1: complete rev E board dated 2-86. |
 | `sources/IMG_4986` to `IMG_4988` | Unit 2: earlier board (593-008004, dated 38-85), partly stripped. |
+| `sources/IMG_4993` to `IMG_4998` | Unit 1 close-ups: C4, R7, the rail film capacitors, R9, and R11 with C8. |
 | `readings/` | Enlarged crops of the parts whose markings and colour bands were read, with the reading written on each. |
 | `kicad/` | KiCad project `superit.kicad_pro`. Root sheet: power supply and test sources. `channel.kicad_sch`: one audio channel, used twice. `superit.lib`: SPICE models. |
+| `kicad/superit-schematic.pdf` | The whole schematic as a PDF: power supply and test fixture, left channel, right channel. |
+| `kicad/channel.png` | The audio circuit of one channel, shown below. |
 | `sim/circuit.py` | The parts list, the single source of every value. Each part is tagged K (known), P (read from a photo) or E (estimate), with a note. |
 | `sim/*.py` | Simulation scripts; see [Running the model](#running-the-model). |
 | `sim/plots/` | The charts below. |
-| `sim/out/` | Results: `study.json`, `extras.json`, `study.log`, `extras.log`. The scripts also write their decks and raw tables here; those are not kept in the repository. |
+| `sim/out/` | Results: `study.json`, `extras.json`, `psu.json` and the matching `.log` files. The scripts also write their decks and raw tables here; those are not kept in the repository. |
 
 ## The circuit
+
+![Audio circuit, one channel](kicad/channel.png)
+
+The full schematic, with the power supply, is in
+[kicad/superit-schematic.pdf](kicad/superit-schematic.pdf). Values on it are
+the ones in the model; R11 is shown at its trimmed setting, and R3 and R8 are
+wire links.
 
 Signal path, one channel (designators from the Rev D drawing):
 
@@ -60,11 +72,11 @@ Signal path, one channel (designators from the Rev D drawing):
    R2 bypassed by C1.
 3. **RIAA network**, passive, between the stages: R6 (475 kΩ) in series, C4
    coupling, then R7 in parallel with C5 (3300 pF), that pair in series with C6
-   (0.01 µF) to ground. R9 (560 kΩ) is the gate leak of Q6 and is part of the
+   (0.01 µF) to ground. R9 (681 kΩ) is the gate leak of Q6 and is part of the
    network.
 4. **Stage 2.** Q6, another U310, with one half of the shared 12AX7 (V2) as the
    cascode and R10 (100 kΩ) from B+2. In the source: R19 unbypassed, then the
-   BIAS trimmer R11 bypassed by C8.
+   BIAS trimmer R11 (5 kΩ) bypassed by C8.
 5. **Output.** Q5, a BSS101 MOSFET source follower loaded by R12 (75 kΩ), then
    C7, the balance pot R13 (100 kΩ), the volume pot R14 (100 kΩ) and R25
    (475 Ω) to J2.
@@ -94,14 +106,15 @@ readings that matter most:
 | R27 | **909 Ω** (clear) | not found | 10 Ω | 909 Ω |
 | R2 | 1.00 kΩ | not legible | 1.00 kΩ | 1.00 kΩ |
 | R19 | 274 Ω | 274 Ω | 274 Ω | 274 Ω |
-| R11 | trimmer, value not visible | same | same | set for 1 mA (about 1.8 kΩ) |
+| R11 | 5 kΩ trimmer (marked 502) | trimmer, value not visible | same | set for 1 mA (about 1.84 kΩ) |
 | R5 | 100 kΩ | looks like 150 kΩ 2 % | 100 kΩ | 100 kΩ |
 | R10 | 100 kΩ | 100 kΩ | 100 kΩ | 100 kΩ |
 | R6 | 475 kΩ | 475 kΩ | 475 kΩ (tentative) | 475 kΩ |
-| R7 | not legible | looks like 22.0 kΩ, **not certain** | not legible | 22 kΩ |
-| R9 | 560 kΩ (two bands hard to see) | not legible | not legible | 560 kΩ |
+| R7 | **22.1 kΩ 1 %** (close-up) | looks the same | not legible | 22.1 kΩ |
+| R9 | **681 kΩ 1 %** (close-up) | not legible | not legible | 681 kΩ |
 | C5, C6 | 3300 pF 1 %, 0.01 µF 2 % | same, markings clear | same | as marked |
-| C4 | red film box, unmarked side up | 0.1 µF 400 V | red film box | 0.1 µF |
+| C4 | WIMA MKP10 0.1 µF 400 V | 0.1 µF 400 V | red film box | 0.1 µF |
+| C8, C1 | C8 looks like 47 µF (tentative); C1 is the same style of can, not read | not legible | not legible | 47 µF both |
 | R3, R8 | 0 Ω links | real resistors, about 22 Ω | 0 Ω links | links |
 | R4 | 1.00 kΩ | 475 kΩ in that position | 1 kΩ | 1.00 kΩ |
 | Q5 | BSS101 | TO-92, not read | TO-92 | BSS101-class model |
@@ -110,15 +123,26 @@ readings that matter most:
 | IC2 | LF353N | **socket empty** | LF353N | LF353 model |
 | C18 | 390 µF 350 V, dated 2024 (a replacement) | **missing** | original can | 390 µF |
 | C14 | red film box | WIMA 1.0 µF 250 V | red film box | 1 µF |
+| Rail film capacitors (C11, C13 on the drawing) | WIMA MKP10 0.22 µF 250 V | not read | red film boxes | 0.22 µF |
 | C21 | not fitted | a small axial part is fitted | not fitted | open |
 | Pots | 100 kΩ MN, 100 kΩ dual | same | same | 100 kΩ |
 
-Still estimates: C1, C8, C3 and C7 (values not legible), the zeners D5, D6, D9
-and D10, the loading resistors R20 to R23, and most of the power-supply
-resistors. B+ is therefore an estimate too: 247 V in the model. It cannot be
-much higher, because C14 sits at B+ and is rated 250 V.
+Still estimates: C3 and C7 (values not legible), C1 (assumed equal to C8),
+the zeners D5, D6, D9 and D10, the loading resistors R20 to R23, and most of
+the power-supply resistors. B+ is therefore an estimate too: 247 V in the
+model. It cannot be much higher, because C14 and the rail film capacitors sit
+at B+ and are rated 250 V.
 
-Three points about these readings:
+Four points about these readings:
+
+- **R7 is 22.1 kΩ, not 2.21 kΩ.** Its bands are red, red, brown, then a
+  multiplier band, then a brown tolerance band set apart. The multiplier
+  band looks close to brown in the photo, which would make 2.21 kΩ. Sampled
+  against the true brown bands on the same resistor it is red, which makes
+  22.1 kΩ. The circuit agrees: one corner of the RIAA curve is set by
+  R7 × (C5 + C6), which must be near 318 µs. 22.1 kΩ gives 294 µs; 2.21 kΩ
+  would give 29 µs. A meter across R7 settles it; see
+  [What to measure](#what-to-measure).
 
 - **R27 explains the different boards.** With R27 = 909 Ω the model gives 58 dB;
   with 10 Ω and R2 re-selected it gives 71 dB. Owners report that the factory
@@ -144,14 +168,14 @@ All figures are simulated: left channel, 10 Ω source unless stated, 100 kΩ and
 
 | Quantity | Value |
 |---|---|
-| Gain at 1 kHz | 58.2 dB (stage 1 with EQ 12.6 dB, stage 2 45.5 dB) |
-| Output for 5 mV at 1 kHz | 4.0 V rms |
+| Gain at 1 kHz | 58.2 dB (stage 1 with EQ 12.7 dB, stage 2 45.5 dB) |
+| Output for 5 mV at 1 kHz | 4.1 V rms |
 | Input noise at 1 kHz | 6.0 nV/√Hz |
 | S/N, A-weighted, re 5 mV, moving-magnet source (1 kΩ + 500 mH) | 78.9 dB |
-| S/N, A-weighted, re 0.5 mV, 10 Ω source | 62.8 dB |
-| THD at 1 kHz | 0.031 % at 0.5 mV, 0.31 % at 5 mV, 1.2 % at 20 mV |
+| S/N, A-weighted, re 0.5 mV, 10 Ω source | 62.9 dB |
+| THD at 1 kHz | 0.031 % at 0.5 mV, 0.31 % at 5 mV, 1.25 % at 20 mV |
 | Input level for 1 % THD | 16 mV |
-| RIAA error re 1 kHz | +0.3 dB at 100 to 200 Hz, +0.6 dB at 10 to 20 kHz |
+| RIAA error re 1 kHz | −0.4 dB at 20 Hz, +0.3 to +0.4 dB from 50 to 200 Hz, +0.5 dB from 10 to 20 kHz |
 | Raw-supply ripple to output | −47 dB at 60 Hz, −62 dB at 120 Hz |
 | Crosstalk L to R | −75 dB at 100 Hz, below −100 dB above 1 kHz |
 
@@ -177,9 +201,13 @@ What limits it:
 
 ![Treble loss from the volume pot](sim/plots/volume_pot_treble_loss.png)
 
-- **RIAA accuracy depends on R7**, the reading I am least sure of. If it is
-  22.0 kΩ the error is the solid line; if it is 23.7 kΩ the treble error halves
-  and the bass falls 0.5 dB at 20 Hz.
+- **The RIAA equalisation is within ±0.5 dB, and two things account for the
+  error.** R7 is a little low: R7 × (C5 + C6) is 294 µs against the standard
+  318 µs, which leaves the response 0.3 to 0.5 dB high on both sides of
+  1 kHz. And the 47 µF source bypass capacitors C1 and C8 start to lose
+  gain below 30 Hz. With R7 = 24.3 kΩ and C1 = C8 = 220 µF the error is within
+  ±0.1 dB from 20 Hz to 20 kHz (the dashed line). The 47 µF reading is
+  tentative, so the 20 Hz figure is the least certain part of this.
 
 ![RIAA error](sim/plots/riaa_error.png)
 
@@ -187,14 +215,17 @@ What limits it:
 
 | | Change from unit 1 as built | Gain, 1 kHz | Noise, 1 kHz | S/N(A) re 0.5 mV | THD at 0.5 mV | THD at 5 mV |
 |---|---|---|---|---|---|---|
-| A | none | 58.2 dB | 6.0 nV/√Hz | 62.8 dB | 0.031 % | 0.31 % |
-| B | R27 10 Ω, R2 1.9 kΩ (the high-gain build) | 71.4 dB | 2.1 | 72.1 dB | 0.13 % | 1.3 % |
-| C | R19 1.5 kΩ, R11 re-trimmed | 47.7 dB | 6.1 | 62.4 dB | 0.002 % | 0.020 % |
-| D | B and C together | 61.0 dB | 2.15 | 71.9 dB | 0.016 % | 0.16 % |
-| E | D with 2SK170 at Q7, R27 22 Ω, R2 about 310 Ω, C1 1000 µF | 70.0 dB | 1.36 | 76.1 dB | 0.033 % | 0.33 % |
-| F | C8 removed, nothing else | 45.1 dB | 6.2 | 62.2 dB | 0.001 % | 0.010 % |
+| A | none | 58.2 dB | 6.0 nV/√Hz | 62.9 dB | 0.031 % | 0.31 % |
+| B | R27 10 Ω, R2 1.9 kΩ, C1 470 µF (the high-gain build) | 71.5 dB | 2.1 | 72.1 dB | 0.13 % | 1.3 % |
+| C | R19 1.5 kΩ, R11 re-trimmed | 47.8 dB | 6.1 | 62.4 dB | 0.002 % | 0.020 % |
+| D | B and C together | 61.1 dB | 2.1 | 72.0 dB | 0.016 % | 0.16 % |
+| E | D with 2SK170 at Q7, R27 22 Ω, R2 about 310 Ω, C1 1000 µF | 70.1 dB | 1.36 | 76.1 dB | 0.033 % | 0.33 % |
+| F | C8 removed, nothing else | 45.2 dB | 6.1 | 62.2 dB | 0.001 % | 0.010 % |
 
-S/N re 5 mV with a moving-magnet source is 78.6 to 80.9 dB for all six.
+S/N re 5 mV with a moving-magnet source is 78.6 to 80.9 dB for all six. The
+RIAA error is the same in all six above 100 Hz. C1 goes up when R27 comes
+down because the lower R27 moves the bypass corner up: with 47 µF and
+R27 = 10 Ω it would be at 16 Hz.
 
 ![THD against level](sim/plots/thd_vs_level.png)
 
@@ -202,34 +233,102 @@ S/N re 5 mV with a moving-magnet source is 78.6 to 80.9 dB for all six.
 
 | R19 | R11 after trim | Gain | THD at 5 mV | Output at 5 mV |
 |---|---|---|---|---|
-| 274 Ω | 1.84 kΩ | 58.2 dB | 0.31 % | 4.0 V |
+| 274 Ω | 1.84 kΩ | 58.2 dB | 0.31 % | 4.1 V |
 | 560 Ω | 1.55 kΩ | 54.4 dB | 0.12 % | 2.6 V |
-| 1.0 kΩ | 1.11 kΩ | 50.6 dB | 0.046 % | 1.7 V |
-| 1.5 kΩ | 0.61 kΩ | 47.7 dB | 0.020 % | 1.2 V |
-| 2.0 kΩ | 0.11 kΩ | 45.5 dB | 0.011 % | 0.9 V |
+| 1.0 kΩ | 1.11 kΩ | 50.7 dB | 0.047 % | 1.7 V |
+| 1.5 kΩ | 0.61 kΩ | 47.8 dB | 0.020 % | 1.2 V |
+| 2.0 kΩ | 0.11 kΩ | 45.6 dB | 0.011 % | 0.95 V |
 
 **R27, the stage-1 knob** (U310 at Q7; R2 re-selected so that R27 + R2 stays
-near 1.91 kΩ; stage 2 with R19 = 1.5 kΩ):
+near 1.91 kΩ; C1 = 470 µF below 909 Ω; stage 2 with R19 = 1.5 kΩ):
 
 | R27 | R2 | Gain | Noise, 1 kHz | S/N(A) re 0.5 mV | THD at 0.5 mV |
 |---|---|---|---|---|---|
-| 909 Ω | 1.00 kΩ | 47.7 dB | 6.1 nV/√Hz | 62.4 dB | 0.002 % |
+| 909 Ω | 1.00 kΩ | 47.8 dB | 6.1 nV/√Hz | 62.4 dB | 0.002 % |
 | 470 Ω | 1.44 kΩ | 51.9 dB | 4.3 | 65.6 dB | 0.003 % |
 | 220 Ω | 1.69 kΩ | 55.7 dB | 3.2 | 68.3 dB | 0.005 % |
-| 100 Ω | 1.81 kΩ | 58.3 dB | 2.6 | 70.1 dB | 0.008 % |
-| 47 Ω | 1.86 kΩ | 59.8 dB | 2.35 | 71.1 dB | 0.012 % |
-| 22 Ω | 1.89 kΩ | 60.6 dB | 2.2 | 71.6 dB | 0.014 % |
-| 10 Ω | 1.90 kΩ | 61.0 dB | 2.15 | 71.9 dB | 0.016 % |
+| 100 Ω | 1.81 kΩ | 58.4 dB | 2.6 | 70.1 dB | 0.008 % |
+| 47 Ω | 1.86 kΩ | 59.8 dB | 2.3 | 71.1 dB | 0.012 % |
+| 22 Ω | 1.89 kΩ | 60.6 dB | 2.2 | 71.7 dB | 0.014 % |
+| 10 Ω | 1.90 kΩ | 61.1 dB | 2.1 | 72.0 dB | 0.016 % |
 
-With R19 left at 274 Ω the gains are 10.5 dB higher and the distortion is
+With R19 left at 274 Ω the gains are 10.4 dB higher and the distortion is
 8 to 15 times higher.
 
 ![Input noise](sim/plots/input_noise.png)
 
+## Power supply across the audio band and above
+
+From `sim/psu.py`. Several supply parts are estimates (C10, C12, C16, C17, the
+zeners), so read these as the behaviour of this kind of regulator, not as
+measurements of the unit. Rail capacitors here are 22 µF with 1 Ω series
+resistance (ESR), which is what a new 350 to 450 V electrolytic of that size
+has.
+
+| Frequency | B+1 rail impedance | Raw ripple to B+ | B+1 as an equivalent input | B+2 as an equivalent input | Raw supply as an equivalent input |
+|---|---|---|---|---|---|
+| 20 Hz | 0.63 Ω | −70 dB | −39 dB | −77 dB | −109 dB |
+| 60 Hz | 0.21 Ω | −82 dB | −39 dB | −75 dB | −121 dB |
+| 120 Hz | 0.10 Ω | −93 dB | −39 dB | −71 dB | −132 dB |
+| 1 kHz | 0.006 Ω | −141 dB | −39 dB | −58 dB | −180 dB |
+| 10 kHz | 0.15 Ω | −163 dB | −39 dB | −45 dB | −202 dB |
+| 20 kHz | 0.30 Ω | −162 dB | −39 dB | −39 dB | −198 dB |
+| 100 kHz | 0.89 Ω | −163 dB | −39 dB | −25 dB | −185 dB |
+| 1 MHz | 0.60 Ω | −171 dB | −39 dB | +10 dB | −155 dB |
+
+"As an equivalent input" means: a disturbance on that rail has the same effect
+on the output as an input signal that many dB smaller.
+
+![Supply rejection](sim/plots/psu_rejection.png)
+
+- **The stages themselves reject very little.** A cascode with a resistor load
+  lets its plate follow the supply. Noise on B+1 reaches the stage-1 plate
+  nearly unattenuated, so referred to the input it is reduced only by the
+  stage-1 gain: 39 dB as built, 52 dB in the high-gain build, at every
+  frequency. Noise on B+2 reaches the output at unity gain up to several
+  hundred kilohertz.
+- **The regulator makes up for it.** Three things act in series: the zener and
+  Darlington pre-regulator, the reference filter (R17/R16 with C14, a 3 Hz
+  corner), and the op-amp loop. Reservoir ripple of up to about 0.1 V rms at 120 Hz
+  comes out as 25 nV referred to the input, 106 dB below a 5 mV signal.
+- **Regulator noise is not a limit.** The LF353's own noise (about
+  18 nV/√Hz, not in the model) lands on B+1 and is worth 0.2 nV/√Hz at the
+  input, against 6 nV/√Hz for the amplifier.
+- **The weak region is below 100 Hz.** There the two rails move together,
+  because the reference follows the pre-regulator rail and only C14 filters
+  it. The rail impedance rises to 0.6 Ω at 20 Hz. This sets both the ripple
+  figure and the low-frequency crosstalk (−55 dB at 20 Hz, −75 dB at 100 Hz).
+  Raising C14 from 1 µF to 4.7 µF improves ripple rejection by 13 dB and
+  crosstalk to −68 dB at 20 Hz and −88 dB at 100 Hz. Raising C17 to 100 µF
+  gives another 10 dB of ripple rejection at 60 Hz.
+- **Above the audio band** the loop has run out of gain (it crosses over at
+  roughly 25 kHz) and the rail impedance is the ESR of C10 and C12. The
+  0.22 µF film capacitors beside them take over only above about 700 kHz. The
+  −160 dB raw-supply figures at high frequency will not be met on a real
+  board: stray coupling and wiring set the floor there, and that is how
+  rectifier switching noise gets in.
+
+![Rail impedance against capacitor ESR](sim/plots/psu_rail_impedance.png)
+
+- **The series resistance of C10 and C12 is what keeps the loop damped.** With
+  0.3 Ω or more there is no peak. With 0.1 Ω the B+1 rail peaks at 1 Ω near
+  22 kHz. With a film capacitor (0.02 Ω) it peaks at 4.4 Ω at 22 kHz (2.6 Ω at
+  30 kHz on B+2) and rings for about half a millisecond after a load step. It
+  stays stable in every case tried. A larger capacitor lowers the peak: 100 µF
+  at 0.1 Ω peaks at 0.27 Ω at 11 kHz. A tired capacitor (10 Ω) gives no peak but
+  leaves the rail at 8 Ω between 200 and 300 kHz.
+- The audible consequence of that peak is small, because the signal currents
+  drawn from the rails are small (tens of microamps to 0.2 mA); by hand
+  calculation the worst case is crosstalk of about −80 dB at the peak
+  frequency. There is still nothing to gain from very low-ESR parts there.
+- The zener model has a lower dynamic impedance than real 130 V zeners at
+  1 mA, so the real pre-regulator probably rejects ripple less well at 60 and
+  120 Hz than the table shows, and depends more on C17.
+
 ## Recommendations
 
 In order of value for effort. Items 2 to 4 need two resistors per channel and
-a meter.
+a meter. Item 7 needs one resistor and two capacitors per channel.
 
 1. **Measure first.** The checks in [What to measure](#what-to-measure) tell
    you whether the model's operating point is right for your unit.
@@ -255,6 +354,7 @@ a meter.
 
 4. **Stage 1: choose R27 for the cartridge.** Always change R2 in the opposite
    direction so that R27 + R2 stays the same and the current does not move.
+   If you lower R27, raise C1 to 470 µF or more to keep the bass response.
    - Moving magnet, about 5 mV: leave R27 at 909 Ω. Lower values add
      distortion and gain you do not need, for at most 2 dB of S/N.
    - High-output moving coil, about 2 mV: R27 220 to 470 Ω.
@@ -276,18 +376,29 @@ a meter.
    reduce it to 0.15 dB but lose 0.5 dB at 20 Hz unless C7 is larger than the
    4.7 µF I assumed.
 
-7. **RIAA trim, only after measuring R7.** If R7 is 22 kΩ and the other values
-   are as read, the error is within ±0.6 dB. R7 = 24.3 kΩ, R9 = 649 kΩ and
-   C4 = 0.22 µF bring the model within ±0.1 dB from 20 Hz to 20 kHz.
+7. **RIAA trim: R7 from 22.1 kΩ to 24.3 kΩ, and C1 and C8 from 47 µF to
+   220 µF.** This takes the error from ±0.5 dB to within ±0.1 dB from 20 Hz
+   to 20 kHz. Do both together: R7 alone leaves the bass 0.9 dB down at
+   20 Hz, and the capacitors alone leave the 0.5 dB error in place. C1 and
+   C8 carry 1984 date codes and are due for replacement anyway; 6.3 V parts
+   are enough (they sit at about 1 V and 2 V). Confirm R7 with a meter first.
 
 8. **Leave C21 unfitted.** On the drawing it links the two Q6 sources. With
    220 pF there, channel separation falls to 54 dB at 10 kHz and 48 dB at
    20 kHz. Unit 2 has a part in that position.
 
+9. **When replacing supply capacitors**, use ordinary electrolytics for C10
+   and C12, not film or polymer types; if you do fit film, add 0.5 to 1 Ω in
+   series. Raise C14 (the reference filter) to 4.7 µF film and C17 to 47 or
+   100 µF: together these improve ripple rejection and low-frequency channel
+   separation by 13 dB or more. See
+   [Power supply](#power-supply-across-the-audio-band-and-above).
+
 Not worth doing: changing the op-amp. It regulates the supply, and the model
 shows 82 dB of rejection from the raw supply to B+ at 60 Hz with the LF353.
-The small electrolytics carry 1984 date codes; replacing C1, C8, C3, C22 and
-the supply capacitors is ordinary maintenance and was not simulated.
+The small electrolytics carry 1984 date codes; replacing C3, C22 and the
+supply capacitors like for like is ordinary maintenance and was not
+simulated.
 
 ## What to measure
 
@@ -302,10 +413,11 @@ directly:
 
 With the unit off and C18 discharged:
 
-- **R7**, in circuit. Its far end connects only to C5 and C6, so a meter
-  across it reads the resistor alone.
-- R11 as set, the values of C1, C8, C3 and C7 if the markings can be seen, and
-  the zener type numbers.
+- **R7**, in circuit, to confirm 22.1 kΩ. Its far end connects only to C5 and
+  C6, so a meter across it reads the resistor alone.
+- R11 as set (the model expects about 1.84 kΩ of the 5 kΩ), the markings on
+  C1 and C8 (47 µF is a tentative reading of C8), C3 and C7, and the zener
+  type numbers.
 
 Put any of these into `sim/circuit.py` and re-run the scripts.
 
@@ -320,6 +432,7 @@ regenerate; do not edit the schematic:
 cd kicad
 python gen_kicad.py      # rebuild the project from sim/circuit.py
 python verify_kicad.py   # ERC, then compare KiCad's netlist and results with the scripted model
+python export.py         # superit-schematic.pdf and channel.png (needs kicad-cli and ImageMagick)
 ```
 
 If KiCad has the project open, close and reopen it after regenerating. The
@@ -334,6 +447,7 @@ python op_point.py       # DC voltages and currents
 python variants.py       # bias point of each variant
 python study.py          # gain, RIAA, noise, distortion for variants A to F  -> out/study.json
 python extras.py         # pot and cable, supply rejection, crosstalk, sensitivities, R27 and R19 tables
+python psu.py            # supply: rail impedance, ripple rejection, capacitor ESR             -> out/psu.json
 python plots.py          # charts -> plots/
 ```
 

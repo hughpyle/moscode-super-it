@@ -67,9 +67,11 @@ for nm, P in (("A", A), ("C", C)):
 
 print("== 4. sensitivity to the readings that are still uncertain (as-built circuit)")
 show("as built (reference)", summary(A), riaa=True)
-show("R7 = 23.7k instead of 22k", summary(dict(A, r7="23.7k")), riaa=True)
+show("R7 = 24.3k", summary(dict(A, r7="24.3k")), riaa=True)
+show("R7 = 24.3k and C1 = C8 = 220u (the RIAA trim)", summary(dict(A, r7="24.3k", c1="220u", c8="220u")), riaa=True)
+show("C1 = C8 = 220u only", summary(dict(A, c1="220u", c8="220u")), riaa=True)
 show("R5 = 150k as on unit 2 (R11 re-trimmed)", summary(clean(tune(dict(r5="150k"), None))), riaa=True)
-show("C4 = 0.22u instead of 0.1u", summary(dict(A, c4="0.22u")), riaa=True)
+show("R9 = 560k instead of 681k", summary(dict(A, r9="560k")), riaa=True)
 P = clean(tune(dict(jfet1="U310TYP", jfet2="U310TYP"), None))
 lines, _ = run("typ_op", params=P, control="op\nprint @j.xchl.jq7[id] v(xchl.p1) v(xchl.k1) v(xchl.g1)")
 print("   centre-of-data-sheet U310 (Vp -4 V, Idss 40 mA) with the fitted R27 + R2 (stage 2 re-trimmed): " + "; ".join(l.strip() for l in lines if "=" in l and "xchl" in l))
@@ -101,7 +103,7 @@ out["r27"] = {}
 for r19, r11 in (("274", "1.8k"), ("1.5k", "600")):
     print(f"   -- stage 2 with R19 = {r19}")
     for r27 in ("909", "470", "220", "100", "47", "22", "10"):
-        P = clean(tune(dict(r27=r27, r2=f"{1909-float(r27):.0f}", r19=r19, r11=r11), "r2"))
+        P = clean(tune(dict(r27=r27, r2=f"{1909-float(r27):.0f}", r19=r19, r11=r11, c1=("47u" if r27 == "909" else "470u")), "r2"))
         r = summary(P); out["r27"][f"{r19},{r27}"] = dict(r, r2=P["r2"])
         show(f"R27={r27:>3} R2={float(P['r2']):5.0f}", r)
 

@@ -9036,7 +9036,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "0.1u"
+		(property "Value" "0.22u"
 			(at 237.236 165.1 0)
 			(effects
 				(font
@@ -9072,7 +9072,16 @@
 				(hide yes)
 			)
 		)
-		(property "Status" "E - estimate"
+		(property "Status" "P - read from board photographs"
+			(at 233.68 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Note" "WIMA MKP 10, 0.22 uF 250 V (unit 1, IMG_4995)"
 			(at 233.68 163.83 0)
 			(effects
 				(font
@@ -9606,7 +9615,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "0.1u"
+		(property "Value" "0.22u"
 			(at 323.596 165.1 0)
 			(effects
 				(font
@@ -9642,7 +9651,16 @@
 				(hide yes)
 			)
 		)
-		(property "Status" "E - estimate"
+		(property "Status" "P - read from board photographs"
+			(at 320.04 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Note" "WIMA MKP 10, 0.22 uF 250 V (unit 1, IMG_4995). The board silkscreen may number the rail films C11 and C12"
 			(at 320.04 163.83 0)
 			(effects
 				(font
@@ -13469,7 +13487,7 @@
 		)
 		(uuid "5c8e9074-49e9-5bfc-b841-2b6dd141ae4e")
 	)
-	(text "Where the values come from (hidden fields Status / Note on every part say more):\n  K  known (drawing / owners' notes): VHT VHTR RH1 RH2 RH3\n  P  read from board photographs: C18 R15 C14 IC2 Q3 Q4 R24 C22 C21\n  E  estimate: L3 L4 D1 D2 D3 D4 R18 D5 D6 C17 Q1 Q2 C16 D9 C15 R17 R16 D7 D8 C12 C13 C10 C11 L1 L2 CR1 C20 IC1 C19 C23\nT1 (transformer box), fuses F1 / F2 and the mains side are not drawn; VHT1 / VHTR1 stand for the two secondaries.\nIC2 is an LF353N (both sections follow the same filtered reference VREF; Q4 feeds stage 1, Q3 stage 2 + followers)."
+	(text "Where the values come from (hidden fields Status / Note on every part say more):\n  K  known (drawing / owners' notes): VHT VHTR RH1 RH2 RH3\n  P  read from board photographs: C18 R15 C14 IC2 Q3 C13 Q4 C11 R24 C22 C21\n  E  estimate: L3 L4 D1 D2 D3 D4 R18 D5 D6 C17 Q1 Q2 C16 D9 C15 R17 R16 D7 D8 C12 C10 L1 L2 CR1 C20 IC1 C19 C23\nT1 (transformer box), fuses F1 / F2 and the mains side are not drawn; VHT1 / VHTR1 stand for the two secondaries.\nIC2 is an LF353N (both sections follow the same filtered reference VREF; Q4 feeds stage 1, Q3 stage 2 + followers)."
 		(exclude_from_sim no)
 		(at 12.7 24.13 0)
 		(effects

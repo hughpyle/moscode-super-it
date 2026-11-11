@@ -58,9 +58,9 @@ def clean(p):
 # name: (changes from the as-built parts list, stage-1 resistor to re-select or None)
 SPECS = {
     "A as built (unit 1): U310s, R27 909R, R19 274R":   (dict(), None),
-    "B high-gain build: R27 10R, R2 re-selected":       (dict(r27="10", r2="1.9k"), "r2"),
+    "B high-gain build: R27 10R, R2 re-selected, C1 470u": (dict(r27="10", r2="1.9k", c1="470u"), "r2"),
     "C A with R19 = 1.5k (stage 2 degenerated)":        (dict(r19="1.5k", r11="400"), None),
-    "D B with R19 = 1.5k":                              (dict(r27="10", r2="1.9k", r19="1.5k", r11="400"), "r2"),
+    "D B with R19 = 1.5k":                              (dict(r27="10", r2="1.9k", c1="470u", r19="1.5k", r11="400"), "r2"),
     "E D with 2SK170 at Q7 (R27 22R, C1 1000u)":        (dict(jfet1="2SK170", r27="22", r2="330", c1="1000u", r19="1.5k", r11="400"), "r2"),
     "F A with C8 simply removed":                       (dict(c8=GONE), None),
 }

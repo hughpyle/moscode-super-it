@@ -21,12 +21,12 @@ re-generated with different values for sweeps and for the upgrade studies.
 
 PARAMS = dict(
     # ---- stage 1
-    jfet1="U310", r27="909", r2="1k", c1="220u", r5="100k",
+    jfet1="U310", r27="909", r2="1k", c1="47u", r5="100k",
     tube1="12AX7", r8="1m",
     # ---- RIAA network (one passive network between the stages)
-    r6="475k", c4="0.1u", r7="22k", c5="3.3n", c6="10n", r9="560k",
+    r6="475k", c4="0.1u", r7="22.1k", c5="3.3n", c6="10n", r9="681k",
     # ---- stage 2
-    jfet2="U310", r19="274", r11="1.836k", c8="220u", r10="100k", tube2="12AX7",
+    jfet2="U310", r19="274", r11="1.836k", c8="47u", r10="100k", tube2="12AX7",
     r12="75k", c7="4.7u", c21="0.01p",
     # ---- output controls: pots written as upper/lower halves
     r13a="1m", r13b="100k",      # balance, shown at "no cut"
@@ -51,7 +51,7 @@ CHANNEL = [
     ("Q7", "NJF", "k1 g7 s7", "{jfet1}", "P", "U310, marking clear on unit 1 (metal can)"),
     ("R27", "R", "s7 n2", "{r27}", "P", "909R on unit 1 (white-black-white-black-red, clear). 10R on the web photo: this unbypassed resistor sets the stage-1 gain"),
     ("R2", "R", "n2 0", "{r2}", "P", "1.00k on unit 1 and web (brown-black-black-brown-brown). Sets the bias with R27; selected on test per owners' notes"),
-    ("C1",  "CE",  "n2 0",        "{c1},0.5", "E", "source bypass across R2 only; small purple can, value not legible"),
+    ("C1", "CE", "n2 0", "{c1},0.5", "E", "source bypass across R2 only; same style of can as C8, assumed the same value"),
     ("V1A", "TRI", "p1 g1 k1",    "{tube1}", "K", "pins 1,2,3"),
     ("V1B", "TRI", "p1 g1 k1",    "{tube1}", "K", "pins 6,7,8 - paralleled with V1A"),
     ("R5", "R", "BP1 p1", "{r5}", "P", "100k on unit 1 and web (owner note: 100 V drop at 1 mA). Unit 2 appears to have 150k 2 %"),
@@ -59,15 +59,15 @@ CHANNEL = [
     ("R4", "R", "VH vg1", "1k", "P", "1.00k on unit 1. Unit 2 has 475k in the R4 position"),
     ("C3",  "CE",  "vg1 0",       "100u,1",  "E", "grid reference decoupling"),
     ("R6", "R", "p1 n6", "{r6}", "P", "475k (yellow-violet-green-orange), clear on units 1 and 2"),
-    ("C4", "C", "n6 g6", "{c4}", "P", "0.1 uF 400 V (blue box, marked) on unit 2; red film box of the same size, unmarked side up, on unit 1"),
-    ("R7", "R", "g6 n7", "{r7}", "P", "looks like red-red-black-red = 22.0k on unit 2 (both channels); NOT certain. The RIAA-exact value would be 23.9k - measure it"),
+    ("C4", "C", "n6 g6", "{c4}", "P", "WIMA MKP 10, 0.1 uF 400 V on unit 1 (IMG_4993); 0.1 uF 400 V blue box on unit 2"),
+    ("R7", "R", "g6 n7", "{r7}", "P", "22.1k 1 % on unit 1 (red-red-brown-red, brown; close-up IMG_4994, multiplier band checked by colour sample). Unit 2 looks the same"),
     ("C5", "C", "g6 n7", "{c5}", "P", "marked .0033/100V 332F (1 %), clear on the second photo"),
     ("C6", "C", "n7 0", "{c6}", "P", "marked .01 100V 103G (2 %), clear"),
-    ("R9", "R", "g6 0", "{r9}", "P", "560k / 562k: green and blue bands hard to see on the blue body, orange multiplier clear (unit 1); agrees with the RIAA arithmetic"),
+    ("R9", "R", "g6 0", "{r9}", "P", "681k 1 % on unit 1: six bands, blue-grey-brown-orange, brown, red (close-up IMG_4996; the blue band is faint on the blue body)"),
     ("Q6", "NJF", "k2 g6 XS", "{jfet2}", "P", "U310, marking clear on unit 2; unit 1 has the same can (only the date code faces up)"),
     ("R19", "R", "XS n11", "{r19}", "P", "274R, red-violet-yellow-black on all boards. Unbypassed: sets the stage-2 gain"),
-    ("R11", "R", "n11 0", "{r11}", "E", "BIAS trimmer; shown set for 1 mA (100 V) in R10"),
-    ("C8",  "CE",  "n11 0",       "{c8},0.5", "E", "source bypass across the trimmer only; small purple can, value not legible"),
+    ("R11", "R", "n11 0", "{r11}", "P", "BIAS trimmer marked 502 = 5k (unit 1, IMG_4998); shown set for 1 mA (100 V) in R10"),
+    ("C8", "CE", "n11 0", "{c8},0.5", "P", "source bypass across the trimmer only; small purple can, top looks like 47 (uF) - tentative (unit 1, IMG_4998)"),
     ("V2",  "TRI", "p2 VG2 k2",   "{tube2}", "K", "V2A pins 1,2,3 (V2B 6,7,8 other channel)"),
     ("R10", "R", "BP2 p2", "{r10}", "P", "100k, bands clear on units 1 and 2"),
     ("Q5", "NMOS", "BP2 p2 s5", "BSS101", "P", "BSS101 (Siemens TO-92), marking clear on unit 1"),
@@ -121,11 +121,11 @@ PSU = [
     ("IC2B", "X", "VREF BP2 RAIL NEG gq3", "OPAMP", "P", "LF353N on unit 1 and web; socket empty on unit 2"),
     ("Q3",  "NMOS", "RAIL gq3 BP2", "HVNMOS", "P", "VN0220N2 (TO-39) on unit 1; TO-92 part on unit 2. Generic model"),
     ("C12", "CE",  "BP2 0",      "22u,1",   "E", ""),
-    ("C13", "C",   "BP2 0",      "0.1u",    "E", ""),
+    ("C13", "C",   "BP2 0",      "0.22u",   "P", "WIMA MKP 10, 0.22 uF 250 V (unit 1, IMG_4995). The board silkscreen may number the rail films C11 and C12"),
     ("IC2A", "X", "VREF BP1 RAIL NEG gq4", "OPAMP", "P", "LF353N, marking clear"),
     ("Q4",  "NMOS", "RAIL gq4 BP1", "HVNMOS", "P", "VN0220N2 (TO-39) on unit 1; TO-92 part on unit 2. Generic model"),
     ("C10", "CE",  "BP1 0",      "22u,1",   "E", ""),
-    ("C11", "C",   "BP1 0",      "0.1u",    "E", ""),
+    ("C11", "C",   "BP1 0",      "0.22u",   "P", "WIMA MKP 10, 0.22 uF 250 V (unit 1, IMG_4995)"),
     # heaters
     ("VHTR", "V",  "hb hg",      "DC {vhtr}", "K", "T1 14.5 VAC secondary, shown as its peak (DC)"),
     ("L1",  "L",   "hb hac1",    "100u",    "E", ""),

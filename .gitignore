@@ -12,3 +12,5 @@ sim/out/*
 !sim/out/extras.json
 !sim/out/study.log
 !sim/out/extras.log
+!sim/out/psu.json
+!sim/out/psu.log
